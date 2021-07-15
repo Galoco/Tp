@@ -1,18 +1,4 @@
 
-typedef enum color {AZUL, NARANJA, VERDE, GRIS} color_t;
-
-typedef enum movimiento {MOV_INMOVIL, MOV_CIRCULAR, MOV_HORIZONTAL} movimiento_t;
-
-typedef enum geometria {GEO_CIRCULO, GEO_RECTANGULO, GEO_POLIGONO} geometria_t;
-
-typedef struct poligono{
-    float (*vertices)[2];
-    size_t n;
-} poligono_t;
-
-
-
-
 //funciones para obstaculos
 void trasladar(float poligono[][2], size_t n, float dx, float dy);//
 void rotar(float poligono[][2], size_t n, double rad); //

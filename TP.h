@@ -56,7 +56,7 @@ typedef struct poligono{
 } poligono_t;
 
 //Funciones de la pelotita(se genera cada vez q se mueve)
-/*double computar_velocidad (double vi, double a, double dt);
+double computar_velocidad (double vi, double a, double dt);
 double computar_posicion (double pi, double vi, double dt);
 
 void posicion (double v, double ax, double ay, double dt, double h, double ang);//ESTE NOS SIRVE??
@@ -114,7 +114,7 @@ void objeto_destruir(poligono_t *poligono);
 
 bool objeto_obtener_vertice(const poligono_t *poligono, size_t pos, float *x, float *y);
 
-poligono_t *objeto_clonar(const poligono_t *poligono);*/ //LAS DEJO COMENTADAS PORQUE YA HICE EL .h
+poligono_t *objeto_clonar(const poligono_t *poligono);
 
 
 
@@ -145,7 +145,6 @@ bool leer_encabezado(FILE *f, color_t *color, movimiento_t *movimiento, geometri
 
 
 
-
 computacion_de_ptos()//
 
 //verificar siempre velocidad pelota
@@ -154,4 +153,3 @@ eliminar_obstaculo()//cuando golpeo un objeto eliminable
 
 reiniciar_juego()// arranca de nuevo con los objetos ya eliminados
 
-//
