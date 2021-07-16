@@ -36,8 +36,18 @@ double poligono_distancia(const poligono_t *p, float cx, float cy, float *norm_x
         dist[i] = //usar formula de distancia, conviene hacer una funcion aparte
 
     }
-    //extraer el valor menor de dist y guardarlo
+  
+    //extraer el valor menor de dist y guardarlo CREO QUE ESTO VA BIEN ASI, COMPARO CADA VALOR Y DEVUELVO EL MENOR
+    double dist_menor= dist[0];
+    for (size_t i=0; i< /*cantidad de puntos*/; i++){
+        if (dist[i]<dist_menor){
+            dist_menor= dist[i];
+        }
+    }   //valor guardado en double dist_menor
+
     //liberar el resto de valores de la memoria
+    free (dist);
+
     *norm_x = cx-/*coordenada mas cercana x*/ ;
     *norm_y = cy - /*coordenada mas cercana y*/;
     
