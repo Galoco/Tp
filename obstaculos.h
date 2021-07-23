@@ -1,51 +1,38 @@
+#ifndef _OBSTACULO_H_
+#define _OBSTACULO_H_
 
-//funciones para obstaculos
-void trasladar(float poligono[][2], size_t n, float dx, float dy);//
-void rotar(float poligono[][2], size_t n, double rad); //
+#include <stdbool.h>
 
-poligono_rotar_centrado(p, cx, cy, ang)//trasladar + rotar+ trasladar (Diseñarla nosotros)
+typedef struct obstaculo obstaculo_t;
 
+//Crea un obstaculo en la posicion (x,y) de radio r
+obstaculo_t *obstaculo_crear(float x, float y, float r);
 
-bool leer_movimiento_inmovil(FILE *f, int16_t parametros[], size_t *n_parametros); //para los obstaculos circulares
+//Libera la memoria asociada al obstaculo a
+void obstaculo_destruir(void * a);
 
-bool leer_movimiento_circular(FILE *f, int16_t parametros[], size_t *n_parametros); // los parametros deben ser el centro y la velocidad
+//Actualiza las variables de estado del obstaculo a segun un intervalo de tiempo dt
+void obstaculo_mover(obstaculo_t * a, float dt);
 
-bool leer_movimiento_horizontal(FILE *f, int16_t parametros[], size_t *n_parametros); //para las plataformas, hay que modificarlo. parametros x1,xi y velocidad.
+//Grafica el obstaculo a sobre la pantalla
+bool obstaculo_dibujar(const obstaculo_t *a);
 
-typedef bool (*t_mov_t)(FILE *f, int16_t parametros[], size_t *n_parametros);
+//Testea si el par de coordenadas (x,y) colisiona con el obstaculo a
+bool obstaculo_colision(const obstaculo_t *a, float x, float y);
 
-t_mov_t mov[] = { // movimientos de los obstaculos
-    [MOV_INMOVIL] = leer_movimiento_inmovil, //puntos
-    [MOV_CIRCULAR] = leer_movimiento_circular, //grupos de obstaculos
-    [MOV_HORIZONTAL] = leer_movimiento_horizontal //plataformas
-    };
+//Devuelve la coordenada x del obstaculo a
+float obstaculo_get_x(const obstaculo_t *a);
 
+//Devuelve la coordenada y del obstaculo a
+float obstaculo_get_y(const obstaculo_t *a);
 
-bool leer_movimiento(FILE *f, movimiento_t movimiento, int16_t parametros[], size_t *n_parametros);
+//Devuelve el radio del obstaculo a
+float obstaculo_get_radio(const obstaculo_t *a);
 
-poligono_t *leer_geometria_circulo(FILE *f);//va a tener que ser tambien asi la pelotita
+void rebote(){
+    //vamos a usar la funcion tal de tal ej
+}
 
-poligono_t *leer_geometria_rectangulo(FILE *f);//plataformas
+void reflejar(float norm_x, float norm_y, float *cx, float *cy, float *vx, float *vy)//ver si necesito googlear una formula
 
-poligono_t *leer_geometria_poligono(FILE *f);//???
-
-
-typedef poligono_t *(*t_geo_t)(FILE *f);
-
-t_geo_t geo[] = {
-    [GEO_CIRCULO] = leer_geometria_circulo,
-    [GEO_RECTANGULO] = leer_geometria_rectangulo,
-    [GEO_POLIGONO] = leer_geometria_poligono
-    };
-
-
-poligono_t *leer_geometria(FILE*f, geometria_t geometria);//tenenmos q crear la geometria dada en un espacio de memoria
-
-
-poligono_t *objeto_crear(float vertices[][2], size_t n); //vamos a ponerle de nombre objeto a estas funciones parra generalizar
-
-void objeto_destruir(poligono_t *poligono);
-
-bool objeto_obtener_vertice(const poligono_t *poligono, size_t pos, float *x, float *y);
-
-poligono_t *objeto_clonar(const poligono_t *poligono);
+#endif // _OBSTACULO_H

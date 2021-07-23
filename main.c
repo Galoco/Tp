@@ -1,48 +1,9 @@
-#include <.h>
+#include <entorno.h>
+#include <lecturas.h>
+#include <config.h>
+#include <obstaculos.h>
+#include <pelotita.h>
 
-//ver si necesito googlear una formula
-double poligono_distancia(const poligono_t *p, float cx, float cy, float *norm_x, float *norm_y){
-
-
-}
-
-//ver si necesito googlear una formula
-void reflejar(float norm_x, float norm_y, float *cx, float *cy, float *vx, float *vy){
-
-}
-
-//trasladar + rotar
-poligono_rotar_centrado(p, cx, cy, ang){
-
-}
-
-// la pantalla arranca arriba iz con x e y crecientes hacia derecha y arriba
-void angulos_cambiados(){
-
-
-}
-
-// cambiar parametros de salida de las funciones ej 4
-leer_geometria()
-
-computacion_de_ptos(){
-
-
-}
-
-//verificar siempre velocidad pelota
-
-//cuando golpeo un objeto eliminable
-eliminar_obstaculo(){
-
-
-}
-// arranca de nuevo con los objetos ya eliminados
-
-reiniciar_juego(){
-  
-}
-//
 
 #ifdef TTF
 #include <SDL2/SDL_ttf.h>
