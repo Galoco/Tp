@@ -2,8 +2,6 @@
 
 #include "poligono.h"
 
-
-
 #define MASK_COLOR 0xC0
 #define MASK_MOVIMIENTO 0x30
 #define MASK_GEOMETRIA 0x0F
