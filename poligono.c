@@ -1,4 +1,4 @@
-#include <poligono.h>
+#include "poligono.h"
 
 void trasladar(float poligono[][2], size_t n, float dx, float dy){
     for (int i = 0; i < n; i++){
@@ -45,21 +45,6 @@ double producto_interno (double ax, double bx, double ay, double by){
 return (ax * bx)  + (ay * by);
 }
 		
-	
-bool poligono_agregar_vertice(poligono_t *poligono, float x, float y){
-    size_t largo = poligono->n;
-    float (*aux)[2] = realloc(poligono->vertices, 2*(largo+1)*sizeof(float));
-    if(aux == NULL) {
-        return false;
-    }
-    poligono->vertices = aux;
-    poligono->n = largo+1;
-    poligono->vertices[largo][0]=x;
-    poligono->vertices[largo][1]=y;
-    return true;
-}
-		  
-		  
 		  
 /*
 Para encontrar la distancia de un punto a una recta se proyecta el punto
@@ -107,9 +92,7 @@ void reflejar(float norm_x, float norm_y, float *cx, float *cy, float *vx, float
     *cx += norm_x * 0.1;
     *cy += norm_y * 0.1;
 }
-
-		  
-		  
+		  		  
 double poligono_distancia(const poligono_t *p, float xp, float yp, float *nor_x, float *nor_y) {
     double d = 1 / 0.0;
     size_t idx = 0;
@@ -165,6 +148,8 @@ void poligono_destruir(poligono_t *poligono){
 	free(poligono);
 }
 
+
+
 bool poligono_obtener_vertice(const poligono_t *poligono, size_t pos, float *x, float *y){
 	if ((pos<0)||(pos>=(poligono->n))||(poligono->vertices==NULL)){
         return false;
@@ -175,8 +160,9 @@ bool poligono_obtener_vertice(const poligono_t *poligono, size_t pos, float *x, 
         return true;
     }
 
-}	
-		
+}
+	
+	
 poligono_t *poligono_clonar(const poligono_t *poligono){
 	if ((pos<0)||(pos>=(poligono->n))||(poligono->vertices==NULL)){
         return false;
@@ -187,8 +173,7 @@ poligono_t *poligono_clonar(const poligono_t *poligono){
         return true;
     }
 	
-}	
 	
-
+}
 
 
