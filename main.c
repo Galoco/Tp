@@ -52,6 +52,12 @@ int main(int argc, char *argv[]) {
     int dormir = 0;
 
     // BEGIN cÃ³digo del alumno
+/*Inicializar el graficador y ver si funciona,
+inicializar la pelotita y ver si funciona
+inicializar los obstaculos como una lista de obstaculos y ver si funciona*/
+/*Inicializar las variables del juego
+como: si quedan obstaculos, tiempo de espera para crear otra pelotita, 
+el puntaje, el mejor puntaje etc.*/  
     float canon_angulo = 0; // Ãngulo del caÃ±Ã³n
     bool cayendo = false;   // Â¿Hay bola disparada?
 
@@ -66,6 +72,13 @@ int main(int argc, char *argv[]) {
                 break;
 
             // BEGIN cÃ³digo del alumno
+            /*Aca nos fijamos que hace cada movimiento del mouse, es decir 
+            que hace nuestra pelotita cuando hacemos diferntes cosas con el mouse
+            */
+           /*Luego de eso veo de reinciciar el juego con menos objetos que antes,
+           es decir veo los objetos que fueron eliminados y los elimino
+           Igualmente creo que esta bastante completo esto ya, habria que ver lo del reincio
+           del juego nomas*/
             if(event.type == SDL_MOUSEBUTTONDOWN) {
                 if(! cayendo)
                     cayendo = true;
@@ -90,7 +103,12 @@ int main(int argc, char *argv[]) {
 #ifdef TTF
         escribir_texto(renderer, font, "Peggle", 100, 20);
 #endif
-
+/*Esto seria como se ejecuta el juego, es decir que pasa mientras estoy jugando
+Tengo que crear un iterador de objetos (de la lista) dibujar cada uno y ver si hay un impacto
+con la pelotita 
+Despues de eso destruimos el iterador de la lista
+Luego chequeamos si quedan objetos por destuir--- si no quedan se pasa al siguiente nivel sino
+se sigue el mismo*/
         if(cayendo) {
             // Si la bola estÃ¡ cayendo actualizamos su posiciÃ³n
             vy = computar_velocidad(vy, G, DT);
@@ -148,6 +166,7 @@ int main(int argc, char *argv[]) {
     }
 
     // BEGIN cÃ³digo del alumno
+    /*Aca hay que liberar toda la mamoria que se haya usado, hacer una funcion para eso*/
     // END cÃ³digo del alumno
 
     SDL_DestroyRenderer(renderer);
@@ -159,4 +178,11 @@ int main(int argc, char *argv[]) {
 #endif
     SDL_Quit();
     return 0;
+}
+
+/*Ver si hay que implementar funciones en el main, casi seguro que si porq hay cosas que no se
+pueden hacer sino */
+
+void reflejar(float norm_x, float norm_y, float *cx, float *cy, float *vx, float *vy){//ver si necesito googlear una formula
+    
 }

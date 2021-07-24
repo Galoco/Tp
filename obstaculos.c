@@ -17,7 +17,12 @@ struct obstaculo
     float *movimiento;
    
 };
-
+/*poligono_t *p = poligono_crear(...);
+    if(p == NULL) return NULL; // Crear en el origen
+    poligono_rotar(p, rotacion);
+    poligono_trasladar(p, cx, cy); // Del EJ2
+    // Del EJ2
+    return p;*/
 
 obstaculo_t *obstaculo_crear(float x, float y, float radio)
 {

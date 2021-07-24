@@ -1,4 +1,8 @@
-#include <lecturas.h>
+#include <math.h>
+
+#include "lecturas.h"
+#include "poligono.h"
+#include "config.h"
 
 bool leer_encabezado(FILE *f, color_t *color, movimiento_t *movimiento, geometria_t *geometria){
     if(f == NULL) return false;
@@ -49,10 +53,20 @@ poligono_t *leer_geometria_circulo(FILE *f){
 
     int16_t parametros[3];
 
-    if(fread(parametros, sizeof(int16_t), 3, f) != 3 ) return NULL;
-
-    poligono_t *p = poligono_crear();
-    if(p == NULL) return NULL; // Crear en el origen
+    if(fread(parametros, sizeof(int16_t), 3, f) != 3 ) return NULL;//x, y , radio
+    
+    poligono_t *p = poligono_crear( NULL, 0);
+    if(p == NULL) return NULL; 
+    float ang= 0;
+    for ( size_t i =0; i<20; i++){
+        float x = parametros[2]*cos (ang);
+        float y = parametros[2]*sen (ang);
+        poligono_agregar_vertice ( p, x, y);
+        ang+= grados_a_radianes (18*PI/180);
+        p->n= (p->n) + 1;
+    } 
+        
+    
     poligono_rotar(p, rotacion);
     poligono_trasladar(p, cx, cy); // Del EJ2
     // Del EJ2
@@ -69,7 +83,7 @@ poligono_t *leer_geometria_rectangulo(FILE *f){
 
     if(fread(parametros, sizeof(int16_t), 5, f) != 5) return NULL;
 
-    poligono_t *p = poligono_crear(...);
+    poligono_t *p = poligono_crear();
     if(p == NULL) return NULL; // Crear en el origen
     poligono_rotar(p, rotacion);
     poligono_trasladar(p, cx, cy); // Del EJ2
@@ -80,30 +94,6 @@ poligono_t *leer_geometria_rectangulo(FILE *f){
     
 }
 
-poligono_t *leer_geometria_poligono(FILE *f){
-    if(f == NULL) return false;
-
-    int16_t n_ptos;
-    if(fread(&n_ptos, sizeof(int16_t), 1, f) != 1) return NULL;
-
-    //printf("puntos = %u\n", n_ptos);
-
-    for (size_t i = 1; i < n_ptos*2; i += 2){
-        int16_t parametros[2];
-        
-        if(fread(parametros, sizeof(int16_t), 2, f) != 2) 
-            return NULL;
-
-        //printf(" x%zd = %u, y%zd = %u \n", i, parametros[0], i, parametros[1]);
-    }
-    poligono_t *p = poligono_crear(...);
-    if(p == NULL) return NULL; // Crear en el origen
-    poligono_rotar(p, rotacion);
-    poligono_trasladar(p, cx, cy); // Del EJ2
-    // Del EJ2
-    return p;
-    
-}
 
 poligono_t *leer_geometria(FILE*f, geometria_t geometria){// cambiar parametros de salida de las funciones ej 4
     if(f == NULL) return false;
