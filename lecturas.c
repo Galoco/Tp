@@ -55,7 +55,8 @@ poligono_t *leer_geometria_circulo(FILE *f){
 
     if(fread(parametros, sizeof(int16_t), 3, f) != 3 ) return NULL;//x, y , radio
     
-    poligono_t p = poligono_crear( NULL, 0);
+    poligono_t *p = poligono_crear( NULL, 0);
+    if(p == NULL) return NULL; 
     float ang= 0;
     for ( size_t i =0; i<20; i++){
         float x = parametros[2]*cos (ang);
@@ -65,27 +66,7 @@ poligono_t *leer_geometria_circulo(FILE *f){
         p->n= (p->n) + 1;
     } 
         
-    }
-    poligono_t *leer_geometria_circulo(FILE *f){
-    int16_t p[3];
-    if(fread(&p,sizeof(uint16_t) ,3, f) !=3){
-        return NULL;
-    }
-    poligono_t p = poligono_crear ( NULL, 0);
-
-    float ang= 0;
-
-    for ( size_t i =0; i<20; i++){
-        float x = parametros[2]*cos (ang);
-        float y = parametros[2]*sen (ang);
-        poligono_agregar_vertice ( p, x, y);
-        ang+= grados_a_radianes (18);
-        p->n+=1;
-    } 
     
-    
-    poligono_t *p = poligono_crear(...);
-    if(p == NULL) return NULL; // Crear en el origen
     poligono_rotar(p, rotacion);
     poligono_trasladar(p, cx, cy); // Del EJ2
     // Del EJ2
