@@ -1,8 +1,12 @@
-#include <entorno.h>
-#include <lecturas.h>
-#include <config.h>
-#include <obstaculos.h>
-#include <pelotita.h>
+#include <SDL2/SDL.h>
+
+#include "lecturas.h"
+#include "config.h"
+#include "obstaculos.h"
+#include "pelotita.h"
+#include "fisica.h"
+
+#define DT (1.0 / JUEGO_FPS)
 
 
 #ifdef TTF

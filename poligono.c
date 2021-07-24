@@ -123,10 +123,6 @@ double poligono_distancia(const poligono_t *p, float xp, float yp, float *nor_x,
     return d;
 }
 
-   
-		  
-		  
-
 poligono_t *poligono_crear(float vertices[][2], size_t n){ //vamos a ponerle de nombre poligono a estas funciones parra generalizar
 	poligono_t *poligono= NULL;
     poligono = malloc (sizeof (poligono_t));
@@ -156,6 +152,8 @@ void poligono_destruir(poligono_t *poligono){
 
 
 
+bool poligono_obtener_vertice(const poligono_t *poligono, size_t pos, float *x, float *y);
+=======
 bool poligono_obtener_vertice(const poligono_t *poligono, size_t pos, float *x, float *y){
 	if ((pos<0)||(pos>=(poligono->n))||(poligono->vertices==NULL)){
         return false;
@@ -184,27 +182,6 @@ poligono_t *poligono_clonar(const poligono_t *poligono){
 //Lo necesitamos?	
 float product_vect(float ax, float ay, float bx, float by ){
 	return ((bx-ax)*(py-ay))-((px-ax)*(by-ay));
-}
-
-	
-	
-bool punto_en_triangulo(float px, float py, float ax, float ay, float bx, float by, float cx, float cy){
-	float p_vec_ab = ((bx-ax)*(py-ay))-((px-ax)*(by-ay));
-	float p_vec_bc = ((cx-bx)*(py-by))-((px-bx)*(cy-by));
-	float p_vec_ca = ((ax-cx)*(py-cy))-((px-cx)*(ay-cy));
-	return (((p_vec_ab)>=0 && (p_vec_bc)>=0 && (p_vec_ca)>=0))||((p_vec_ab)<=0 && (p_vec_bc)<=0 && ((p_vec_ca)<=0));	
-}
-
-	
-
-bool punto_en_poligono(float poligono[][2], size_t n, float px, float py){
-	int i;
-	for (i=1; i< (n - 1); i++) {
-		if (punto_en_triangulo(px, py, pol[0][0], pol[0][1], pol[i][0], pol[i][1], pol[i+1][0], pol[i+1][1])){
-			return true;
-		}
-	}
-	return false;
 }
 
 
