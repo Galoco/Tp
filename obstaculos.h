@@ -17,8 +17,8 @@ void obstaculo_mover(obstaculo_t * a, float dt);
 //Grafica el obstaculo a sobre la pantalla
 bool obstaculo_dibujar(const obstaculo_t *a);
 
-//Testea si el par de coordenadas (x,y) colisiona con el obstaculo a
-bool obstaculo_colision(const obstaculo_t *a, float x, float y);
+//Testea si el par de coordenadas (x,y) rebota con el obstaculo a
+bool obstaculo_rebote(const obstaculo_t *a, float x, float y);
 
 //Devuelve la coordenada x del obstaculo a
 float obstaculo_get_x(const obstaculo_t *a);
@@ -33,6 +33,5 @@ void rebote(){
     //vamos a usar la funcion tal de tal ej
 }
 
-void reflejar(float norm_x, float norm_y, float *cx, float *cy, float *vx, float *vy)//ver si necesito googlear una formula
 
 #endif // _OBSTACULO_H

@@ -2,18 +2,22 @@
 #include "graficador.h"
 #include "config.h"
 #include "fisica.h"
-#include "matematica.h"
+#include "poligono.h"
+#include "lecturas.h"
 
 #include <math.h>
 
 struct obstaculo 
 {
-   //parametros del obstaculo
+    float x;
+    float y;
+    float v;
+    float *color;
+    float *geometria;
+    float *movimiento;
+   
 };
 
-static char * obstaculo_clases[4] = {
-	//ver si tengo diferentes tipos de obstaculo
-};
 
 obstaculo_t *obstaculo_crear(float x, float y, float radio)
 {
