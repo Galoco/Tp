@@ -165,10 +165,6 @@ void poligono_destruir(poligono_t *poligono){
 	free(poligono);
 }
 
-
-
-bool poligono_obtener_vertice(const poligono_t *poligono, size_t pos, float *x, float *y);
-=======
 bool poligono_obtener_vertice(const poligono_t *poligono, size_t pos, float *x, float *y){
 	if ((pos<0)||(pos>=(poligono->n))||(poligono->vertices==NULL)){
         return false;
@@ -179,9 +175,8 @@ bool poligono_obtener_vertice(const poligono_t *poligono, size_t pos, float *x, 
         return true;
     }
 
-	
-	
-	
+}	
+		
 poligono_t *poligono_clonar(const poligono_t *poligono){
 	if ((pos<0)||(pos>=(poligono->n))||(poligono->vertices==NULL)){
         return false;
@@ -192,11 +187,8 @@ poligono_t *poligono_clonar(const poligono_t *poligono){
         return true;
     }
 	
+}	
 	
-	
-//Lo necesitamos?	
-float product_vect(float ax, float ay, float bx, float by ){
-	return ((bx-ax)*(py-ay))-((px-ax)*(by-ay));
-}
+
 
 
