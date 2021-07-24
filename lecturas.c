@@ -66,14 +66,9 @@ poligono_t *leer_geometria_circulo(FILE *f){
         p->n= (p->n) + 1;
     } 
         
+    poligono_trasladar(p, parametros[0], parametros[1]); 
     
-    poligono_rotar(p, rotacion);
-    poligono_trasladar(p, cx, cy); // Del EJ2
-    // Del EJ2
     return p;
-
-    //printf("CIRCULO: x: %u, y: %u, radio: %u \n", parametros[0], parametros[1], parametros[2] );
-    
 }
 
 poligono_t *leer_geometria_rectangulo(FILE *f){
@@ -81,17 +76,21 @@ poligono_t *leer_geometria_rectangulo(FILE *f){
 
     int16_t parametros[5];
 
-    if(fread(parametros, sizeof(int16_t), 5, f) != 5) return NULL;
-
-    poligono_t *p = poligono_crear();
-    if(p == NULL) return NULL; // Crear en el origen
-    poligono_rotar(p, rotacion);
-    poligono_trasladar(p, cx, cy); // Del EJ2
-    // Del EJ2 
-    return p;
-
-    //printf("RECTANGULO: x = %u, y = %u, ancho = %u, alto = %u, angulo = %u\n",parametros[0], parametros[1], parametros[2], parametros[3], parametros[4]);
+    if(fread(parametros, sizeof(int16_t), 5, f) != 5) return NULL;// x, y, ancho, alto, angulo
     
+    poligono_t *p = poligono_crear( NULL, 0);
+    if(p == NULL) return NULL; 
+     
+    
+    poligono_agregar_vertice (p, (parametros[2]/2), parametros[3]/2);
+    poligono_agregar_vertice (p, -(parametros[2]/2), parametros[3]/2);
+    poligono_agregar_vertice (p, -(parametros[2]/2), -parametros[3]/2);
+    poligono_agregar_vertice (p, (parametros[2]/2), -parametros[3]/2);
+        
+    poligono_rotar(p, parametros[4]);
+    poligono_trasladar(p, parametros[0], parametros[1]); 
+    
+    return p;  
 }
 
 
