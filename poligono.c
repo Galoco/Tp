@@ -1,5 +1,60 @@
 #include "poligono.h"
 
+poligono_t *poligono_crear(float vertices[][2], size_t n){ 
+	poligono_t *poligono= NULL;
+    poligono = malloc (sizeof (poligono_t));
+    if  ((poligono== NULL)){
+        return NULL;
+    }
+    poligono->vertices = malloc (2*n*sizeof(float));
+    if(poligono-> vertices==NULL){
+        free (poligono);
+        return NULL;
+    }
+    for (size_t i=0; i< n; i++){
+        for (size_t j=0; j< 2; j++){
+            poligono->vertices[i][j]= vertices[i][j];
+        }
+    }
+    (poligono->n) = n;
+    return poligono;
+}
+void poligono_destruir(poligono_t *poligono){
+	free(poligono->vertices);
+	free(poligono);
+}
+
+bool poligono_obtener_vertice(const poligono_t *poligono, size_t pos, float *x, float *y){
+	if ((pos<0)||(pos>=(poligono->n))||(poligono->vertices==NULL)){
+        return false;
+    }
+    
+    *x= (poligono->vertices [pos][0]);
+    *y= (poligono->vertices [pos][1]);
+    return true;
+    
+
+}
+		
+poligono_t *poligono_clonar(const poligono_t *poligono){
+    return poligono_crear(poligono->vertices, poligono->n);
+}
+
+bool poligono_agregar_vertice(poligono_t *poligono, float x, float y){
+    float (*new_vertices)[2] = realloc(poligono->vertices, 2 * poligono->n * sizeof(float));
+    if (new_vertices == NULL){
+        return false;
+    }
+
+    new_vertices[poligono->n-1][0] = x;
+    new_vertices[poligono->n-1][1] = y;
+    
+    poligono->n = poligono->n + 1;
+    poligono->vertices = new_vertices;
+    
+    return true;
+}
+
 void trasladar(float poligono[][2], size_t n, float dx, float dy){
     for (int i = 0; i < n; i++){
         poligono[i][0] += dx;
@@ -45,15 +100,6 @@ double producto_interno (double ax, double bx, double ay, double by){
 return (ax * bx)  + (ay * by);
 }
 		
-		  
-/*
-Para encontrar la distancia de un punto a una recta se proyecta el punto
-ortogonalmente sobre la recta.
-El producto [(X.P) / (X.X)] X es la proyección del punto P sobre X.
-El coeficiente entre corchetes será la proporción de P sobre X.
-Como estamos trabajando con segmentos de recta, si el coeficiente es menor a
-cero o mayor a uno nos caímos del segmento.
-*/
 void punto_mas_cercano(float x0, float y0, float x1, float y1, float xp, float yp, float *x, float *y) {
     float ax = xp - x0;
     float ay = yp - y0;
@@ -76,9 +122,6 @@ void punto_mas_cercano(float x0, float y0, float x1, float y1, float xp, float y
     }
 }
 
-/*
-Reflejamos según P' = P - 2 D(P.D)
-*/
 void reflejar(float norm_x, float norm_y, float *cx, float *cy, float *vx, float *vy) {
     float proy = producto_interno(norm_x, norm_y, *vx, *vy);
 
@@ -121,72 +164,4 @@ double poligono_distancia(const poligono_t *p, float xp, float yp, float *nor_x,
     return d;
 }
 
-poligono_t *poligono_crear(float vertices[][2], size_t n){ //vamos a ponerle de nombre poligono a estas funciones parra generalizar
-	poligono_t *poligono= NULL;
-    poligono = malloc (sizeof (poligono_t));
-    if  ((poligono== NULL)){
-        return NULL;
-    }
-    poligono->vertices = malloc (2*n*sizeof(float));
-    if(poligono-> vertices==NULL){
-        free (poligono);
-        return NULL;
-    }
-    for (size_t i=0; i< n; i++){
-        for (size_t j=0; j< 2; j++){
-            poligono->vertices[i][j]= vertices[i][j];
-        }
-    }
-    (poligono->n) = n;
-    return poligono;
-}
 
-
-	
-void poligono_destruir(poligono_t *poligono){
-	free(poligono->vertices);
-	free(poligono);
-}
-
-
-
-bool poligono_obtener_vertice(const poligono_t *poligono, size_t pos, float *x, float *y){
-	if ((pos<0)||(pos>=(poligono->n))||(poligono->vertices==NULL)){
-        return false;
-    }
-    else{
-        *x= (poligono->vertices [pos][0]);
-        *y= (poligono->vertices [pos][1]);
-        return true;
-    }
-
-}
-	
-	
-poligono_t *poligono_clonar(const poligono_t *poligono){
-	if ((pos<0)||(pos>=(poligono->n))||(poligono->vertices==NULL)){
-        return false;
-    }
-    else{
-        *x= (poligono->vertices [pos][0]);
-        *y= (poligono->vertices [pos][1]);
-        return true;
-    }
-	
-	
-}
-
-bool poligono_agregar_vertice(poligono_t *poligono, float x, float y){
-    float (*new_vertices)[2] = realloc(poligono->vertices, 2 * poligono->n * sizeof(float));
-    if (new_vertices == NULL){
-        return false;
-    }
-
-    new_vertices[poligono->n-1][0] = x;
-    new_vertices[poligono->n-1][1] = y;
-    
-    poligono->n = poligono->n + 1;
-    poligono->vertices = new_vertices;
-    
-    return true;
-}
