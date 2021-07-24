@@ -19,4 +19,5 @@ poligono_rotar_centrado(p, cx, cy, ang);
 
 void trasladar(float poligono[][2], size_t n, float dx, float dy);//
 void rotar(float poligono[][2], size_t n, double rad); //
+bool poligono_agregar_vertice(poligono_t *poligono, float x, float y);
 
