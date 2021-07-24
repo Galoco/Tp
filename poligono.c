@@ -176,4 +176,17 @@ poligono_t *poligono_clonar(const poligono_t *poligono){
 	
 }
 
+bool poligono_agregar_vertice(poligono_t *poligono, float x, float y){
+    float (*new_vertices)[2] = realloc(poligono->vertices, 2 * poligono->n * sizeof(float));
+    if (new_vertices == NULL){
+        return false;
+    }
 
+    new_vertices[poligono->n-1][0] = x;
+    new_vertices[poligono->n-1][1] = y;
+    
+    poligono->n = poligono->n + 1;
+    poligono->vertices = new_vertices;
+    
+    return true;
+}

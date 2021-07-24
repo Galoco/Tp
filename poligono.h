@@ -33,3 +33,5 @@ void poligono_destruir(poligono_t *poligono);
 bool poligono_obtener_vertice(const poligono_t *poligono, size_t pos, float *x, float *y);
 
 poligono_t *poligono_clonar(const poligono_t *poligono);
+
+bool poligono_agregar_vertice(poligono_t *poligono, float x, float y);
