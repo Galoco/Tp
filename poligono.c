@@ -45,6 +45,21 @@ double producto_interno (double ax, double bx, double ay, double by){
 return (ax * bx)  + (ay * by);
 }
 		
+	
+bool poligono_agregar_vertice(poligono_t *poligono, float x, float y){
+    size_t largo = poligono->n;
+    float (*aux)[2] = realloc(poligono->vertices, 2*(largo+1)*sizeof(float));
+    if(aux == NULL) {
+        return false;
+    }
+    poligono->vertices = aux;
+    poligono->n = largo+1;
+    poligono->vertices[largo][0]=x;
+    poligono->vertices[largo][1]=y;
+    return true;
+}
+		  
+		  
 		  
 /*
 Para encontrar la distancia de un punto a una recta se proyecta el punto
