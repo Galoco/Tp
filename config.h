@@ -35,7 +35,7 @@
 #define PLASTICIDAD 0.8
 #define ROZAMIENTO 0.9999
 
-
+#define DT (1.0 / JUEGO_FPS)
 #endif // _CONFIG_H_
 
 

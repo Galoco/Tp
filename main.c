@@ -6,7 +6,7 @@
 #include "pelotita.h"
 #include "fisica.h"
 
-#define DT (1.0 / JUEGO_FPS)
+
 
 
 #ifdef TTF

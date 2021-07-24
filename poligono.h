@@ -18,7 +18,7 @@ bool poligono_agregar_vertice(poligono_t *poligono, float x, float y);
 void trasladar(float poligono[][2], size_t n, float dx, float dy);
 void rotar(float poligono[][2], size_t n, double rad); 
 
-void poligono_rotar_centrado(p, cx, cy, ang);
+void poligono_rotar_centrado(poligono_t *p, float cx, float cy, float ang);
 double distancia(int x1, int y1, int x2, int y2);
 double producto_interno (double ax, double bx, double ay, double by);
 
