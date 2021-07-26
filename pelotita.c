@@ -11,7 +11,7 @@ typedef struct pelotita
 	float y;
 	float vx;
 	float vy;
-	float angulo;
+	float radio;
 	float tiempo;
 }pelotita_t;
 
@@ -48,29 +48,35 @@ void pelotita_mover(pelotita_t * bola, float dt)
 	graficador_ajustar_variables(&(bola->x), &(bola->y));	
 }
 
-bool pelotita_dibujar(pelotita_t * bola)
-{
-	return graficador_dibujar(DISPARO_SPRITE, 1, bola->x, bola->y, bola->angulo);
+void graficar_pelotita(pelotita_t * bola){
+    float angulo=0;
+    for (size_t i = 0 ; i< 720; i++){
+        angulo+= grados_a_radianes (0.5);
+		float coseno=(bola->radio * cos(angulo));
+		float seno = (bola->radio * sin (angulo));
+        SDL_RenderDrawLine(renderer, (bola->x + coseno), (bola->y + seno), bola->x, bola->y);
+    }
 }
 
 
 // LAS FUNCIONES SIGUIENTES DEVUELVEN LOS PARAMETROS
-float disparo_get_x(const disparo_t *bola)
+float pelotita_get_x(const pelotita_t *bola)
 {
     return bola->x;
 }
 
-float disparo_get_y(const disparo_t *bola)
+float pelotita_get_y(const pelotita_t *bola)
 {
     return bola->y;
 }
 
-float disparo_get_angulo(const disparo_t *bola)
+float pelotita_get_radio(const pelotita_t *bola)
 {
-    return bola->angulo;
+    return bola->radio;
 }
 
-float disparo_get_tiempo(const disparo_t *bola)
+
+float pelotita_get_tiempo(const pelotita_t *bola)
 {
 	return bola->tiempo;
 }
