@@ -3,8 +3,7 @@
 
 //funciones para la pelotita
 double computar_velocidad (double vi, double a, double dt){
-    return  (dt * a + vi);//ESTA BIEN ESTO??
-    //return (dt*a+vi)- (dt*rozamiento) se me ocurre esto, lo consulto por discord  
+    return  (dt * a + vi);
 }
 
 double computar_posicion (double pi, double vi, double dt){
