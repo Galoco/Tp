@@ -41,8 +41,6 @@ poligono_t *leer_geometria_circulo(FILE *f);//va a tener que ser tambien asi la 
 
 poligono_t *leer_geometria_rectangulo(FILE *f);//plataformas
 
-poligono_t *leer_geometria_poligono(FILE *f);//???
-
 
 typedef poligono_t *(*t_geo_t)(FILE *f);
 

@@ -7,50 +7,64 @@
 
 #include <math.h>
 
-struct obstaculo 
+struct obstaculo_circular
 {
     float x;
     float y;
-    float v;
-    float *color;
-    float *geometria;
-    float *movimiento;
-   
+    float radio;
+    color_t *color;
 };
-/*poligono_t *p = poligono_crear(...);
-    if(p == NULL) return NULL; // Crear en el origen
-    poligono_rotar(p, rotacion);
-    poligono_trasladar(p, cx, cy); // Del EJ2
-    // Del EJ2
-    return p;*/
 
-obstaculo_t *obstaculo_crear(float x, float y, float radio)
+struct obstaculo_rectangular
+{
+    float x;
+    float y;
+    float ancho;
+    float alto;
+    float angulo;
+    color_t *color;
+    movimiento_t *movimiento;    
+}
+
+obstaculo_c_t *obstaculo_c_crear(float x, float, y, float radio){
+    obstaculo_c_t *o = malloc(sizeof(obstaculo_c_t));
+    if(o == NULL) retunr NULL;
+
+    o->x = x;
+    o->y = y;
+
+    
+}
+
+void obstaculo_movimiento(poligono_t *p, FILE *f, movimiento_t movimiento, int16_t parametros[], size_t *n_parametros )
+{
+	if(leer_movimiento(f, movimiento, parametros, *n_parametros))
+        if(movimiento == MOV_CIRCULAR)
+            while(p != NULL){
+                poligono_rotar_centrado(p, parametros[0], parametros[1], parametros[2]/DT);
+            }
+        if(movimiento == MOV_HORIZONTAL)
+            while(p != NULL){
+                trasladar(p, p->n, parametros[1], 0);
+                while((parametros[1] != parametros[0]) && (parametros[1] =! 0)){
+                        trasladar(p, p->n, parametros[2]/DT, 0);
+                    if((parametros[1] != parametros[0]) && (parametros[1] =! 0))
+                        trasladar(p, p->n, -parametros[2]/DT, 0);
+
+                }
+            } 
+}
+
+
+bool obstaculo_dibujar(const poligono_t *p)
 {
     
 }
 
-void obstaculo_destruir(void * a)
+bool obstaculo_rebote(const poligono_t *p, float x, float y)
 {
-	
+
 }
 
-void obstaculo_mover(obstaculo_t * a, float dt)
-{
-	
-}
-
-bool obstaculo_dibujar(const obstaculo_t *a)
-{
-    
-}
-
-bool obstaculo_colision(const obstaculo_t *a, float x, float y)
-{
-	}
-
-float obstaculo_get_x(const obstaculo_t *a)
-{
-    //hace una funcion para cada parametro de obstaculo
-}
 
 
