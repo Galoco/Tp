@@ -25,7 +25,6 @@ pelotita_t *pelotita_crear(float x, float y, float angulo)
 
 	bola->x = x;
 	bola->y = y;
-	bola->angulo = angulo;
 
 	bola->vx = BOLA_VI* cos(angulo);
 	bola->vy = BOLA_VI * sin(angulo);
