@@ -5,34 +5,72 @@
 
 #include <math.h>
 
-struct pelotita
+typedef struct pelotita
 {
-	//parametros pelotita
-};
+	float x;
+	float y;
+	float vx;
+	float vy;
+	float angulo;
+	float tiempo;
+}pelotita_t;
 
 
 pelotita_t *pelotita_crear(float x, float y, float angulo)
 {
-	
+	pelotita_t * bola = malloc(sizeof(pelotita_t));
+	if(bola == NULL){
+		return NULL
+    }
+
+	bola->x = x;
+	bola->y = y;
+	bola->angulo = angulo;
+
+	bola->vx = BOLA_VI* cos(angulo);
+	bola->vy = BOLA_VI * sin(angulo);
+
+	bola->tiempo = 0;
+
+	return bola;
 }
 
-void pelotita_destruir(void *d)
+void pelotita_destruir(void *bola)
 {
-	
+	free (bola);
 }
 
-void pelotita_mover(pelotita_t * d, float dt)
+void pelotita_mover(pelotita_t * bola, float dt)
 {
-	
+	bola->x = computar_posicion(bola->x, bola->vx, dt);
+	bola->y = computar_posicion(bola->y, bola->vy, dt);
+	bola->tiempo += dt;
+	graficador_ajustar_variables(&(bola->x), &(bola->y));	
 }
 
-bool pelotita_dibujar(pelotita_t * d)
+bool pelotita_dibujar(pelotita_t * bola)
 {
-	
+	return graficador_dibujar(DISPARO_SPRITE, 1, bola->x, bola->y, bola->angulo);
 }
 
-float pelotita_get_parametros(const pelotita_t *d)
+
+// LAS FUNCIONES SIGUIENTES DEVUELVEN LOS PARAMETROS
+float disparo_get_x(const disparo_t *bola)
 {
-    //hacer una funcion para cada parametro y que devuelva ese parametro
+    return bola->x;
 }
 
+float disparo_get_y(const disparo_t *bola)
+{
+    return bola->y;
+}
+
+float disparo_get_angulo(const disparo_t *bola)
+{
+    return bola->angulo;
+}
+
+float disparo_get_tiempo(const disparo_t *bola)
+{
+	return bola->tiempo;
+}
