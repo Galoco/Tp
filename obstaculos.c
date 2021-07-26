@@ -7,6 +7,35 @@
 
 #include <math.h>
 
+struct obstaculo_circular
+{
+    float x;
+    float y;
+    float radio;
+    color_t *color;
+};
+
+struct obstaculo_rectangular
+{
+    float x;
+    float y;
+    float ancho;
+    float alto;
+    float angulo;
+    color_t *color;
+    movimiento_t *movimiento;    
+}
+
+obstaculo_c_t *obstaculo_c_crear(float x, float, y, float radio){
+    obstaculo_c_t *o = malloc(sizeof(obstaculo_c_t));
+    if(o == NULL) retunr NULL;
+
+    o->x = x;
+    o->y = y;
+
+    
+}
+
 void obstaculo_movimiento(poligono_t *p, FILE *f, movimiento_t movimiento, int16_t parametros[], size_t *n_parametros )
 {
 	if(leer_movimiento(f, movimiento, parametros, *n_parametros))
