@@ -8,7 +8,6 @@
 
 
 
-
 #ifdef TTF
 #include <SDL2/SDL_ttf.h>
 
@@ -182,7 +181,3 @@ se sigue el mismo*/
 
 /*Ver si hay que implementar funciones en el main, casi seguro que si porq hay cosas que no se
 pueden hacer sino */
-
-void reflejar(float norm_x, float norm_y, float *cx, float *cy, float *vx, float *vy){//ver si necesito googlear una formula
-    
-}

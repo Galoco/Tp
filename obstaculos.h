@@ -3,9 +3,7 @@
 
 #include <stdbool.h>
 
-typedef struct obstaculo_circular obstaculo_c_t;
-
-typedef struct obstaculo_rectangular obstaculo_r_t;
+typedef struct obstaculo obstaculo_t;
 
 //Crea un obstaculo en la posicion (x,y) de radio r
 obstaculo_t *obstaculo_crear(float x, float y, float r);
@@ -31,9 +29,6 @@ float obstaculo_get_y(const obstaculo_t *a);
 //Devuelve el radio del obstaculo a
 float obstaculo_get_radio(const obstaculo_t *a);
 
-void rebote(){
-    //vamos a usar la funcion tal de tal ej
-}
-
+void rebote();
 
 #endif // _OBSTACULO_H

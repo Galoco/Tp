@@ -4,6 +4,7 @@
 #include "poligono.h"
 #include "config.h"
 
+
 bool leer_encabezado(FILE *f, color_t *color, movimiento_t *movimiento, geometria_t *geometria){
     if(f == NULL) return false;
     
@@ -53,16 +54,19 @@ poligono_t *leer_geometria_circulo(FILE *f){
 
     int16_t parametros[3];
 
-    if(fread(parametros, sizeof(int16_t), 3, f) != 3 ) return NULL;//x, y , radio
+    if(fread(parametros, sizeof(int16_t), 3, f) != 3 ) return NULL;//x, y y radio
     
     poligono_t *p = poligono_crear( NULL, 0);
     if(p == NULL) return NULL; 
-    float ang= 0;
-    for ( size_t i =0; i<20; i++){
-        float x = parametros[2]*cos (ang);
-        float y = parametros[2]*sen (ang);
-        poligono_agregar_vertice ( p, x, y);
-        ang+= grados_a_radianes (18*PI/180);
+
+    float ang = 0;
+    for (size_t i = 0; i < 20; i++){
+        float x = (parametros[0] + parametros[2])*cos (ang);
+        float y = (parametros[1] + parametros[2])*sen (ang);
+
+        poligono_agregar_vertice (p, x, y);
+        ang += 18*PI/180;
+
         p->n= (p->n) + 1;
     } 
         
