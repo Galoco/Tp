@@ -5,30 +5,19 @@
 
 typedef struct obstaculo obstaculo_t;
 
-//Crea un obstaculo en la posicion (x,y) de radio r
-obstaculo_t *obstaculo_crear(float x, float y, float r);
+//Crea un obstaculo leido de f
+obstaculo_c_t *obstaculo_crear(FILE *f);
 
-//Libera la memoria asociada al obstaculo a
-void obstaculo_destruir(void * a);
+//Libera la memoria asociada al obstaculo o
+void destruir_obstaculo(obstaculo_t *o, void (*destruir)(void *));
 
-//Actualiza las variables de estado del obstaculo a segun un intervalo de tiempo dt
-void obstaculo_mover(obstaculo_t * a, float dt);
+//Actualiza las variables de estado del obstaculo o segun su movimietno
+void obstaculo_movimiento(obstaculo_t *o);
 
-//Grafica el obstaculo a sobre la pantalla
-bool obstaculo_dibujar(const obstaculo_t *a);
+//Grafica el obstaculo o sobre la pantalla
+void obstaculo_dibujar(const obstaculo_t *o);
 
 //Testea si el par de coordenadas (x,y) rebota con el obstaculo a
-bool obstaculo_rebote(const obstaculo_t *a, float x, float y);
-
-//Devuelve la coordenada x del obstaculo a
-float obstaculo_get_x(const obstaculo_t *a);
-
-//Devuelve la coordenada y del obstaculo a
-float obstaculo_get_y(const obstaculo_t *a);
-
-//Devuelve el radio del obstaculo a
-float obstaculo_get_radio(const obstaculo_t *a);
-
-void rebote();
+bool obstaculo_rebote(obstaculo_t *o, float, x, float y)
 
 #endif // _OBSTACULO_H
