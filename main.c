@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 
     int dormir = 0;
 
-    // BEGIN cÃ³digo del alumno
+    // BEGIN cÃ³digo del alumno 1
 /*Inicializar el graficador y ver si funciona,
 inicializar la pelotita y ver si funciona
 inicializar los obstaculos como una lista de obstaculos y ver si funciona*/
@@ -70,7 +70,7 @@ el puntaje, el mejor puntaje etc.*/
             if (event.type == SDL_QUIT)
                 break;
 
-            // BEGIN cÃ³digo del alumno
+            // BEGIN cÃ³digo del alumno 2
             /*Aca nos fijamos que hace cada movimiento del mouse, es decir 
             que hace nuestra pelotita cuando hacemos diferntes cosas con el mouse
             */
@@ -98,7 +98,7 @@ el puntaje, el mejor puntaje etc.*/
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0x00);
 
 
-        // BEGIN cÃ³digo del alumno
+        // BEGIN cÃ³digo del alumno 3
 #ifdef TTF
         escribir_texto(renderer, font, "Peggle", 100, 20);
 #endif
@@ -164,7 +164,7 @@ se sigue el mismo*/
         ticks = SDL_GetTicks();
     }
 
-    // BEGIN cÃ³digo del alumno
+    // BEGIN cÃ³digo del alumno 4
     /*Aca hay que liberar toda la mamoria que se haya usado, hacer una funcion para eso*/
     // END cÃ³digo del alumno
 
