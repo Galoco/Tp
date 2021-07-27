@@ -71,8 +71,9 @@ void obstaculo_dibujar(const obstaculo_t *o){
         if (o->color == GRIS)
             SDL_SetRenderDrawColor(renderer, 0x87, 0x87, 0x87, 0x00);
 
-        
-        for (size_t i = 1; i <= o->poligono->n; i++)
+        SDL_RenderDrawLine(renderer, o->poligono->vertices[0][0], o->poligono->vertices[0][1], 
+                                        o->poligono->vertices[o->poligono->n - 1][0], o->poligono->vertices[o->poligono->n - 1][1]);
+        for (size_t i = 1; i <= o->poligono->n - 1; i++)
             SDL_RenderDrawLine(renderer, o->poligono->vertices[i-1][0], o->poligono->vertices[i-1][1], 
                                         o->poligono->vertices[i][0], o->poligono->vertices[i][1]);       
     } 
