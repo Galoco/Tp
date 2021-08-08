@@ -1,8 +1,21 @@
 #include <math.h>
+#include <assert.h>
 
 #include "lecturas.h"
-#include "poligono.h"
 #include "config.h"
+
+//ACA PARECE ESTAR TODO BIEN
+t_mov_t mov[] = { 
+    [MOV_INMOVIL] = leer_movimiento_inmovil, 
+    [MOV_CIRCULAR] = leer_movimiento_circular, 
+    [MOV_HORIZONTAL] = leer_movimiento_horizontal 
+    };
+
+t_geo_t geo[] = {
+    [GEO_CIRCULO] = leer_geometria_circulo,
+    [GEO_RECTANGULO] = leer_geometria_rectangulo,
+    [GEO_POLIGONO] = leer_geometria_poligono
+    };
 
 
 bool leer_encabezado(FILE *f, color_t *color, movimiento_t *movimiento, geometria_t *geometria){
@@ -40,7 +53,7 @@ bool leer_movimiento_horizontal(FILE *f, int16_t parametros[], size_t *n_paramet
     if(f == NULL) return false;
 
     *n_parametros = 3;//x1, xi y velocidad
-    return (fread(parametros, sizeof(int16_t), 4, f) == 4);
+    return (fread(parametros, sizeof(int16_t), 3, f) == 3);
 }
 
 bool leer_movimiento(FILE *f, movimiento_t movimiento, int16_t parametros[], size_t *n_parametros){
@@ -51,56 +64,75 @@ bool leer_movimiento(FILE *f, movimiento_t movimiento, int16_t parametros[], siz
 
 poligono_t *leer_geometria_circulo(FILE *f){
     if(f == NULL) return false;
-
-    int16_t parametros[3];
+    //lo hice dinamico.
+    int16_t *parametros = malloc(sizeof(int16_t));
+    if(parametros == NULL) return NULL;
 
     if(fread(parametros, sizeof(int16_t), 3, f) != 3 ) return NULL;//x, y y radio
     
-    poligono_t *p = poligono_crear( NULL, 0);
-    if(p == NULL) return NULL; 
+    poligono_t *p = poligono_crear(NULL, 0); 
 
-    float ang = 0;
-    for (size_t i = 0; i < 20; i++){
-        float x = (parametros[0] + parametros[2])*cos (ang);
-        float y = (parametros[1] + parametros[2])*sen (ang);
-
-        poligono_agregar_vertice (p, x, y);
-        ang += 18*PI/180;
-
-        p->n= (p->n) + 1;
-    } 
+    for (double ang = 0; ang < 2*PI; ang += (PI/10)){
+        float x = parametros[2] * cos(ang);
+        float y = parametros[2] * sin(ang);
         
-    poligono_trasladar(p, parametros[0], parametros[1]); 
-    
+        assert(poligono_agregar_vertice(p, x, y));
+    }
+        
+    trasladar(p, parametros[0], parametros[1]);
+
+    free(parametros);
+
     return p;
 }
 
 poligono_t *leer_geometria_rectangulo(FILE *f){
     if(f == NULL) return false;
 
-    int16_t parametros[5];
+    int16_t *parametros = malloc(sizeof(int16_t));
+    if(parametros == NULL) return NULL;
 
     if(fread(parametros, sizeof(int16_t), 5, f) != 5) return NULL;// x, y, ancho, alto, angulo
     
-    poligono_t *p = poligono_crear( NULL, 0);
-    if(p == NULL) return NULL; 
-     
+    poligono_t *p = poligono_crear(NULL, 0);
     
-    poligono_agregar_vertice (p, (parametros[2]/2), parametros[3]/2);
-    poligono_agregar_vertice (p, -(parametros[2]/2), parametros[3]/2);
-    poligono_agregar_vertice (p, -(parametros[2]/2), -parametros[3]/2);
-    poligono_agregar_vertice (p, (parametros[2]/2), -parametros[3]/2);
+    assert(poligono_agregar_vertice (p, ((float)parametros[2]/2), ((float)parametros[3]/2)));
+    assert(poligono_agregar_vertice (p, -((float)parametros[2]/2), (float)parametros[3]/2));
+    assert(poligono_agregar_vertice (p, -((float)parametros[2]/2), -(float)parametros[3]/2));
+    assert(poligono_agregar_vertice (p, ((float)parametros[2]/2), -((float)parametros[3]/2)));
         
-    poligono_rotar(p, parametros[4]);
-    poligono_trasladar(p, parametros[0], parametros[1]); 
+        
+    rotar(p, parametros[4]*PI/180);
+    trasladar(p,parametros[0], parametros[1]);
+
+    free(parametros);
     
     return p;  
 }
 
+poligono_t *leer_geometria_poligono(FILE *f){
+    if(f == NULL) return false;
 
-poligono_t *leer_geometria(FILE*f, geometria_t geometria){// cambiar parametros de salida de las funciones ej 4
+    int16_t n_ptos;
+    if(fread(&n_ptos, sizeof(int16_t), 1, f) != 1) return NULL;
+
+    poligono_t *p = poligono_crear( NULL, 0);
+
+    for (size_t i = 1; i < n_ptos*2; i += 2){
+        int16_t *parametros = malloc(2*sizeof(int16_t));
+        if(parametros == NULL) return NULL;
+        
+        if(fread(parametros, sizeof(int16_t), 2, f) != 2) 
+            return NULL;
+
+        assert(poligono_agregar_vertice(p, (float)parametros[0], (float)parametros[1]));
+        free(parametros);
+    }
+    return p;
+}
+
+poligono_t *leer_geometria(FILE*f, geometria_t geometria){
     if(f == NULL) return false;
 
     return geo[geometria](f);
 }
-

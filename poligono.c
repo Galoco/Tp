@@ -1,103 +1,105 @@
-#include "poligono.h"
+#include <math.h>
+#include <SDL2/SDL.h>
 
+#include "poligono.h"
+#include "config.h"
+
+//ACA PARECE ESTAR TODO BIEN AHORA, CAMBIE UN PAR DE COSAS
 poligono_t *poligono_crear(float vertices[][2], size_t n){ 
-	poligono_t *poligono= NULL;
-    poligono = malloc (sizeof (poligono_t));
-    if  ((poligono== NULL)){
-        return NULL;
-    }
-    poligono->vertices = malloc (2*n*sizeof(float));
-    if(poligono-> vertices==NULL){
-        free (poligono);
-        return NULL;
-    }
-    for (size_t i=0; i< n; i++){
-        for (size_t j=0; j< 2; j++){
-            poligono->vertices[i][j]= vertices[i][j];
+	poligono_t *poligono = malloc (sizeof (poligono_t));
+    if  ((poligono== NULL)) return NULL;
+    
+    if(n != 0){
+        poligono->vertices = malloc (2 * n *sizeof(float));
+        if(poligono->vertices == NULL){
+            free (poligono);
+            return NULL;
         }
+
+        (poligono->n) = n;
+
+        for (size_t i=0; i< poligono->n; i++)
+            for (size_t j=0; j< 2; j++)
+                poligono->vertices[i][j]= vertices[i][j];
+        return poligono;
     }
-    (poligono->n) = n;
+    poligono->n = n;
+    poligono->vertices = NULL;
+    
     return poligono;
 }
+
 void poligono_destruir(poligono_t *poligono){
 	free(poligono->vertices);
 	free(poligono);
 }
 
 bool poligono_obtener_vertice(const poligono_t *poligono, size_t pos, float *x, float *y){
-	if ((pos<0)||(pos>=(poligono->n))||(poligono->vertices==NULL)){
+	if ((pos < 0)||(pos >= poligono->n)||(poligono->vertices == NULL))
         return false;
-    }
     
-    *x= (poligono->vertices [pos][0]);
-    *y= (poligono->vertices [pos][1]);
-    return true;
-    
+    *x = (poligono->vertices [pos][0]);
+    *y = (poligono->vertices [pos][1]);
 
-}
-		
-poligono_t *poligono_clonar(const poligono_t *poligono){
-    return poligono_crear(poligono->vertices, poligono->n);
+    return true;
 }
 
 bool poligono_agregar_vertice(poligono_t *poligono, float x, float y){
-    float (*new_vertices)[2] = realloc(poligono->vertices, 2 * poligono->n * sizeof(float));
-    if (new_vertices == NULL){
+    size_t largo = poligono->n;
+
+    float (*aux)[2] = realloc(poligono->vertices, 2*(largo+1)*sizeof(float));
+    if(aux == NULL){
+        free(aux);
         return false;
     }
 
-    new_vertices[poligono->n-1][0] = x;
-    new_vertices[poligono->n-1][1] = y;
-    
-    poligono->n = poligono->n + 1;
-    poligono->vertices = new_vertices;
-    
+    poligono->vertices = aux;
+    poligono->n = largo + 1;
+
+    poligono->vertices[largo][0]=x;
+    poligono->vertices[largo][1]=y;
+
     return true;
 }
 
-void trasladar(float poligono[][2], size_t n, float dx, float dy){
-    for (int i = 0; i < n; i++){
-        poligono[i][0] += dx;
-        poligono[i][1] += dy;
+void poligono_dibujar(SDL_Renderer *renderer, poligono_t *poligono){
+    SDL_RenderDrawLine(renderer, poligono->vertices[0][0], poligono->vertices[0][1], poligono->vertices[poligono->n - 1][0], poligono->vertices[poligono->n - 1][1]);
+    
+    for (size_t i = 1; i < poligono->n; i++)
+        SDL_RenderDrawLine(renderer, poligono->vertices[i-1][0], poligono->vertices[i-1][1], poligono->vertices[i][0], poligono->vertices[i][1]);
+}
+
+void trasladar(poligono_t *poligono, float dx, float dy){
+    for (int i = 0; i < poligono->n;i++){
+        poligono->vertices[i][0] += dx;
+        poligono->vertices[i][1] += dy;
     } 
 }
 
-void rotar(float poligono[][2], size_t n, double rad){
+void rotar(poligono_t *poligono, double rad){
     double cosn = cos(rad);
     double sen = sin(rad);
     
-    for (int i = 0; i < n; i++){
-
-        float x = poligono[i][0] * cosn - poligono[i][1] * sen;
-		float y = poligono[i][0] * sen + poligono[i][1] * cosn;
-
-        poligono[i][0] = x;
-		poligono[i][1] = y;
+    for (int i = 0; i < poligono->n; i++){
+        float x = poligono->vertices[i][0]*cosn - poligono->vertices[i][1]*sen;
+		float y = poligono->vertices[i][0]*sen + poligono->vertices[i][1]*cosn;
+        poligono->vertices[i][0] = x;
+        poligono->vertices[i][1] = y;
     }   
 }
 
-void poligono_rotar_centrado(poligono_t *p, float cx, float cy, float ang)//trasladar + rotar+ trasladar (Diseñarla nosotros)
-{
-    //trasladarlo el largo del objeto al centro - el largo por el sen(ang)
-	trasladar(p, p->n, ((1-sen(ang)*cx), 0);  
-    //luego rotarlo ang
-	rotar (p, p->n, ang);
-    // luego trasladarlo hacia abajo cos(ang)
-	trasladar (p,p->n,0, (cy*cos(ang)));
-
-/*podria hacerse con la norma?, 
-double r = sqrt((pow(cx,2)) + (pow (cy,2)));
-trasladar (p, p->n, r*cos(ang), r*sen(ang));
-rotar (p, p->n, ang); 
-*/
-		  
+void poligono_rotar_centrado(poligono_t *p, float cx, float cy, float ang){  
+	trasladar(p, -cx, -cy);
+	rotar(p, ang*PI/180);
+	trasladar(p,cx,cy);	  
 }
+
 double distancia(int x1, int y1, int x2, int y2){
     return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
 }
 		  
 double producto_interno (double ax, double bx, double ay, double by){
-return (ax * bx)  + (ay * by);
+    return (ax * bx)  + (ay * by);
 }
 		
 void punto_mas_cercano(float x0, float y0, float x1, float y1, float xp, float yp, float *x, float *y) {
@@ -145,7 +147,7 @@ double poligono_distancia(const poligono_t *p, float xp, float yp, float *nor_x,
         punto_mas_cercano(p->vertices[i][0], p->vertices[i][1], p->vertices[(i + 1) % p->n][0], p->vertices[(i + 1) % p->n][1], xp, yp, &xi, &yi);
         double di = distancia(xp, yp, xi, yi);
 
-        if(di < d) {
+        if(di < d){
             d = di;
             idx = i;
         }
@@ -163,5 +165,3 @@ double poligono_distancia(const poligono_t *p, float xp, float yp, float *nor_x,
 
     return d;
 }
-
-

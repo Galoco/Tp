@@ -1,7 +1,8 @@
-#include <fisica.h>
 #include <math.h>
 
-//funciones para la pelotita
+#include "fisica.h"
+
+
 double computar_velocidad (double vi, double a, double dt){
     return  (dt * a + vi);
 }
