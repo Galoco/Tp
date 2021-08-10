@@ -65,7 +65,7 @@ bool leer_movimiento(FILE *f, movimiento_t movimiento, int16_t parametros[], siz
 poligono_t *leer_geometria_circulo(FILE *f){
     if(f == NULL) return false;
     //lo hice dinamico.
-    int16_t *parametros = malloc(sizeof(int16_t));
+    int16_t *parametros = malloc(3*sizeof(int16_t));
     if(parametros == NULL) return NULL;
 
     if(fread(parametros, sizeof(int16_t), 3, f) != 3 ) return NULL;//x, y y radio
@@ -89,7 +89,7 @@ poligono_t *leer_geometria_circulo(FILE *f){
 poligono_t *leer_geometria_rectangulo(FILE *f){
     if(f == NULL) return false;
 
-    int16_t *parametros = malloc(sizeof(int16_t));
+    int16_t *parametros = malloc(5*sizeof(int16_t));
     if(parametros == NULL) return NULL;
 
     if(fread(parametros, sizeof(int16_t), 5, f) != 5) return NULL;// x, y, ancho, alto, angulo
@@ -125,7 +125,7 @@ poligono_t *leer_geometria_poligono(FILE *f){
         if(fread(parametros, sizeof(int16_t), 2, f) != 2) 
             return NULL;
 
-        assert(poligono_agregar_vertice(p, (float)parametros[0], (float)parametros[1]));
+        assert(poligono_agregar_vertice(p, parametros[0], parametros[1]));
         free(parametros);
     }
     return p;

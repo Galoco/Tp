@@ -12,7 +12,7 @@ struct obstaculo{
     color_t color;
     movimiento_t movimiento;
     geometria_t geometria;
-    int16_t parametros[3];
+    float parametros[3];
     size_t n_parametros;
     poligono_t *poligono;
     bool eliminado;

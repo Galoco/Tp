@@ -98,7 +98,7 @@ double distancia(int x1, int y1, int x2, int y2){
     return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
 }
 		  
-double producto_interno (double ax, double bx, double ay, double by){
+double producto_interno (double ax, double ay, double bx, double by){
     return (ax * bx)  + (ay * by);
 }
 		

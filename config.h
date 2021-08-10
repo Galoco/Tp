@@ -32,7 +32,7 @@
 #define JUEGO_FPS 200
 
 #define G 600
-#define PLASTICIDAD 0.8
+#define PLASTICIDAD 0.7
 #define ROZAMIENTO 0.9999
 
 #define DT (1.0 / JUEGO_FPS)

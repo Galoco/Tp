@@ -5,39 +5,24 @@
 
 #include "obstaculos.h"
 #include "config.h"
+#include "fisica.h"
 
 //Esto habria que verificarlo, deberia estar bien
 obstaculo_t *obstaculo_crear(FILE *f){    
-    color_t color;
-    movimiento_t movimiento;
-    geometria_t geometria;
-    int16_t parametros[3];
-    size_t n_parametros;
-    poligono_t *poligono;
-
-    assert(leer_encabezado(f, &color, &movimiento, &geometria));
-    assert(leer_movimiento(f, movimiento, parametros, &n_parametros));
-    
-
     obstaculo_t *o = malloc(sizeof(obstaculo_t));
     if(o == NULL) return NULL;
-
-    poligono = leer_geometria(f, geometria);
+    int16_t *parametros = malloc(3*sizeof(int16_t));
     
-    o->color = color;
-    o->movimiento = movimiento;
-    o->geometria = geometria;
-    for(size_t i = 0; i < n_parametros; i++)
-                o->parametros[i] = parametros[i]; 
-    o->n_parametros = n_parametros;
-    o->poligono = poligono;
+    assert(leer_encabezado(f, &(o->color), &(o->movimiento), &(o->geometria)));
+    assert(leer_movimiento(f, o->movimiento, parametros, &(o->n_parametros)));
+    for(size_t i = 0; i < o->n_parametros; i++) {
+        o->parametros[i] = parametros[i];
+    }
+    o->poligono = leer_geometria(f, o->geometria);
+       
     o->eliminado = false;
-    // if(leer_encabezado(f, &(o->color), &(o->movimiento), &(o->geometria)))
-    //     if (leer_movimiento(f, o->movimiento, o->parametros, &(o->n_parametros)))
-    //         o->poligono = leer_geometria(f, o->geometria);
-    
-    // o->eliminado = false;
-    
+
+    free(parametros); 
     return o;
 }
 
@@ -47,27 +32,21 @@ void destruir_obstaculo(obstaculo_t *o){
 }
 
 void obstaculo_movimiento(obstaculo_t *o){
-    float v = (float)o->parametros[2];
+    float v = o->parametros[2];
     
     if(o->movimiento == MOV_CIRCULAR)
-        if(!o->eliminado)
-            poligono_rotar_centrado(o->poligono, o->parametros[0], o->parametros[1], v * DT*10);
+        poligono_rotar_centrado(o->poligono, o->parametros[0], o->parametros[1], (float)v * DT*10);
         
     //HAY QUE ARREGLAR ESTO PORQ SE MUEVEN SOLO HACIA UN LADO
-    if(o->movimiento == MOV_HORIZONTAL)
-        if(!o->eliminado){
-            o->parametros[1] += v*DT;
-            trasladar(o->poligono, v * DT, 0);
-            if((o->parametros[1] > o->parametros[0]) || ( o->parametros[1] < 0)){
-                v = -v;
-                //trasladar(o->poligono, v * DT, 0);
-                
-            }
-            if((o->parametros[1] < o->parametros[0]) || ( o->parametros[1] > 0)){
-                v = -v;
-                //trasladar(o->poligono, v * DT, 0);
-            }
+    if(o->movimiento == MOV_HORIZONTAL){
+        o->parametros[1] += (v*DT);
+        trasladar(o->poligono, v*DT, 0);
+        
+        if(o->parametros[1] > o->parametros[0] || o->parametros[1] < 0){
+            o->parametros[2] = -v;
         }
+       
+    }
 }
 
 void obstaculo_dibujar(SDL_Renderer *renderer, const obstaculo_t *o){
